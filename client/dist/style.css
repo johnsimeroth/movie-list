@@ -1,3 +1,48 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: sans-serif, arial;
+}
+
+.boxes {
+  /* height: 70px; */
+  width: 450px;
+  margin-bottom: 10px;
+  font-size: 22px;
+  display: flex;
+}
+
+.button {
+  height: 40px;
+  /* width: 40px; */
+  font-size: 22px;
+}
+
+.input {
+  height: 40px;
+  width: 400px;
+  font-size: 22px;
+}
+
+.add-movie-form {
+  height: 40px;
+  justify-content: space-between;
+}
+
+.add-submit {
+  width: 40px;
+  border-radius: 50%;
+}
+
+.movie-entries {
+  height: 70px;
+  border: solid;
+  border-radius: 10px;
+  background-color: rgb(255, 165, 91);
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 20px;
+  padding-right: 20px;
 }
