@@ -1,5 +1,4 @@
 import React from 'react';
-// import { useRef } from 'react';
 
 const Search = ({searchRef, changeCB, toggle, toggleCB}) => {
   var buttonText;

@@ -7,7 +7,6 @@ body {
 }
 
 .boxes {
-  /* height: 70px; */
   width: 450px;
   margin-bottom: 10px;
   font-size: 22px;
@@ -16,7 +15,6 @@ body {
 
 .button {
   height: 40px;
-  /* width: 40px; */
   font-size: 22px;
 }
 
