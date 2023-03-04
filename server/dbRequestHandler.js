@@ -14,6 +14,7 @@ module.exports = {
   },
 
   update: (params, callback) => {
+    const qryStr = 'UPDATE movies SET is_watched = ? WHERE id = ?';
     db.query(qryStr, params, (err, results) => callback(err, results));
   }
 

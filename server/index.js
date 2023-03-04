@@ -16,7 +16,6 @@ app.use(express.json());
 app.use(express.static('client/dist'));
 
 app.get('/api/movies', (req, res, next) => {
-  console.log('server get is running');
   dbReq.getAll((err, results) => {
     if (err) {return console.log('ERROR getting movies from database')}
     res.json(results);
@@ -24,12 +23,18 @@ app.get('/api/movies', (req, res, next) => {
 });
 
 app.post('/api/movies', (req, res) => {
-  console.log('server post is running');
-  console.log('request body is: ', req.body);
   const params = [req.body.title, req.body.isWatched];
   dbReq.create(params, (err, results) => {
     if (err) {return console.log('ERROR adding movie to database')}
     res.sendStatus(201);
+  });
+});
+
+app.put('/api/movies/:id', (req, res) => {
+  const params = [(req.body.isWatched), parseInt(req.params.id)];
+  dbReq.update(params, (err, results) => {
+    if (err) {return console.log('ERROR updating movie on database', err)}
+    res.sendStatus(200);
   });
 });
 

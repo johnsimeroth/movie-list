@@ -26,32 +26,28 @@ const App = (props) => {
   const searchRef = useRef(null);
   useEffect(() => { filterMovies() }, [movies, toggle]);
   useEffect(() => { requests.getMoviesFromMyDB(setMovies) }, []);
+  // useEffect(() => { requests.searchMoviesFromTMDB('jack+reacher',
+  // (results)=> {
+  //   console.log(results[0].id);
+  //   requests.getMovieDetailsFromTMDB(results[0].id, console.log)
+  // })}, []);
 
   // EVENT HANDLERS
-  const addMovie = (e) => {
-    e.preventDefault();
+  const addMovie = (movie) => {
+    // e.preventDefault();
     const newMovie = {title: e.target.textfield.value, isWatched: false};
-    // const newMovieList = [...movies, newMovie];
-    // setMovies(newMovieList);
-
-    // adds movie to database, then pulls down all movies from db so that all data fields stay in sync (e.g. the database auto-generated id)
-    requests.addMovieToMyDB(newMovie, (response) => {
-      requests.getMoviesFromMyDB(setMovies);
-    });
-
+    requests.addMovieToMyDB(newMovie, refreshMoviesFromDB);
     e.target.reset();
   };
 
   const updateWatched = (e, clickedMovie) => {
-    var newMovieList = movies.map(movie => {return {...movie}});
-    newMovieList.forEach(movie => {
-      if (movie.title === clickedMovie.title) {
-        movie.isWatched = !movie.isWatched;
-      }
-    })
-    requests.updateMovieOnMyDB()
-    setMovies(newMovieList); // as a callback passed into setMovies, send a put request to update clickedMovie's 'is watched' property on the db
+    let updatedMovie = movies.filter(movie => movie.id === clickedMovie.id)[0];
+    updatedMovie = {...updatedMovie}; // makes a copy
+    updatedMovie.isWatched = !updatedMovie.isWatched;
+    requests.updateMovieOnMyDB(updatedMovie, (response) => {requests.getMoviesFromMyDB(setMovies)})
   }
+
+  const refreshMoviesFromDB = (response) => {requests.getMoviesFromMyDB(setMovies)}
 
   const handleToggle = (e) => {setToggle(!toggle);}
 
@@ -63,7 +59,7 @@ const App = (props) => {
   };
 
 
-  // JSX RETURN ELEMENT
+  // JSX ELEMENT TO RENDER
   return (
     <div>
       <AddMovieForm submitCB={addMovie} />

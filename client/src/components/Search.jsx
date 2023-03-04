@@ -10,7 +10,7 @@ const Search = ({searchRef, changeCB, toggle, toggleCB}) => {
 
 return (
     <div>
-      <input ref={searchRef} type="text" className="searchbar boxes input" placeholder="Find a movie" onChange={changeCB}/>
+      <input ref={searchRef} type="text" className="searchbar boxes input" placeholder="Find a movie from your list" onChange={changeCB}/>
       <button onClick={toggleCB} >{buttonText}</button>
     </div>
   );
