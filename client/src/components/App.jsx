@@ -4,8 +4,18 @@ import { useState, useEffect, useRef } from 'react';
 import MovieList from './MovieList.jsx';
 import Search from './Search.jsx';
 import AddMovieForm from './AddMovieForm.jsx';
+import requests from './clientRequestHandler.js';
 
 const defaultMovies = [];
+
+/*
+OTHER STUFF TO ADD:
+Think about when it makes sense to request this information from the api - when the user clicks on the title? When the movie gets added? Refactor your code as necessary.
+Add a way for the user to add their own rating
+Add a sorting mechanism so the user can sort on rating or other properties
+Refactor search to allow users to search for movies with a specific director or actor/actress
+Refactor add movie to search for movies that exist
+*/
 
 const App = (props) => {
 
@@ -14,15 +24,21 @@ const App = (props) => {
   const [matchedMovies, setMatchedMovies] = useState(movies);
   const [toggle, setToggle] = useState(false);
   const searchRef = useRef(null);
-  useEffect(() => {filterMovies()}, [movies, toggle]);
-
+  useEffect(() => { filterMovies() }, [movies, toggle]);
+  useEffect(() => { requests.getMoviesFromMyDB(setMovies) }, []);
 
   // EVENT HANDLERS
   const addMovie = (e) => {
     e.preventDefault();
     const newMovie = {title: e.target.textfield.value, isWatched: false};
-    const newMovieList = [...movies, newMovie];
-    setMovies(newMovieList);
+    // const newMovieList = [...movies, newMovie];
+    // setMovies(newMovieList);
+
+    // adds movie to database, then pulls down all movies from db so that all data fields stay in sync (e.g. the database auto-generated id)
+    requests.addMovieToMyDB(newMovie, (response) => {
+      requests.getMoviesFromMyDB(setMovies);
+    });
+
     e.target.reset();
   };
 
@@ -33,7 +49,8 @@ const App = (props) => {
         movie.isWatched = !movie.isWatched;
       }
     })
-    setMovies(newMovieList);
+    requests.updateMovieOnMyDB()
+    setMovies(newMovieList); // as a callback passed into setMovies, send a put request to update clickedMovie's 'is watched' property on the db
   }
 
   const handleToggle = (e) => {setToggle(!toggle);}
